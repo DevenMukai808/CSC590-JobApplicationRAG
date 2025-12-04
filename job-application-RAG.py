@@ -5,20 +5,20 @@ import pandas as pd
 from typing import List
 from PyPDF2 import PdfReader
 
-# Streamlit config
+
 st.set_page_config(page_title="Job Matching RAG")
 
-# Load job dataset once
+
 @st.cache_data
 def load_jobs():
-    # jobs.csv must have columns: title, company, description
+    
     return pd.read_csv("jobs.csv")
 
 jobs_df = load_jobs()
 
 jobs_df['description'] = jobs_df['description'].fillna("")
 
-# ---- Ollama Helper ----
+
 def call_ollama(prompt: str, model: str = "llama3.2") -> str:
     """Call Ollama API to generate response"""
     url = "http://localhost:11434/api/generate"
@@ -34,7 +34,7 @@ def call_ollama(prompt: str, model: str = "llama3.2") -> str:
     except Exception as e:
         return f"Error calling Ollama: {str(e)}"
 
-# ---- Utility: chunk resume text ----
+
 def chunk_text(text: str, chunk_size: int = 500) -> List[str]:
     words = text.split()
     chunks = []
@@ -52,7 +52,7 @@ def chunk_text(text: str, chunk_size: int = 500) -> List[str]:
         chunks.append(" ".join(current))
     return chunks
 
-# ---- Resume Extract ----
+
 def extract_resume_text(uploaded_pdf):
     reader = PdfReader(uploaded_pdf)
     text = ""
@@ -60,7 +60,7 @@ def extract_resume_text(uploaded_pdf):
         text += page.extract_text() + "\n"
     return text
 
-# ---- Basic job matching ----
+
 def simple_job_match(resume_text: str, jobs_df: pd.DataFrame, top_k: int = 5):
     resume_words = set(resume_text.lower().split())
     scores = []
@@ -76,10 +76,6 @@ def simple_job_match(resume_text: str, jobs_df: pd.DataFrame, top_k: int = 5):
 
     scores.sort(reverse=True, key=lambda x: x[0])
     return [row for _, row in scores[:top_k]]
-
-# -----------------------------------------------------
-# ---------------------- UI ---------------------------
-# -----------------------------------------------------
 
 st.title("Resume Job Application RAG")
 st.write("Upload your resume to find relevant job postings")
@@ -114,8 +110,8 @@ if uploaded_resume:
                 f"Description: {job['description']}\n\n"
             )
 
-        # ---- RAG Prompt ----
-        rag_prompt = f"""
+        
+rag_prompt = f"""
 You are a job-matching assistant.
 
 Given the user's resume:
@@ -128,12 +124,6 @@ And the following job postings:
 
 Explain which jobs best fit the candidate and why. Provide a friendly summary.
 """
-
-#        st.subheader("AI Summary")
-#        with st.spinner("Generating recommendation..."):
-#            answer = call_ollama(rag_prompt, model)
-#
-#        st.write(answer)
 
 with st.expander("ℹ️ How it works"):
     st.markdown("""
