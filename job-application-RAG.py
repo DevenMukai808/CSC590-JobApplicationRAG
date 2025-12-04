@@ -81,8 +81,8 @@ def simple_job_match(resume_text: str, jobs_df: pd.DataFrame, top_k: int = 5):
 # ---------------------- UI ---------------------------
 # -----------------------------------------------------
 
-st.title("Resume Job Matching RAG")
-st.write("Upload your resume to find relevant job postings!")
+st.title("Resume Job Application RAG")
+st.write("Upload your resume to find relevant job postings")
 
 uploaded_resume = st.file_uploader("Upload Resume (PDF)", type=["pdf"])
 model = st.selectbox("Choose Ollama Model:", ["llama3.2", "llama3.1", "mistral", "phi3"])
@@ -143,6 +143,4 @@ with st.expander("ℹ️ How it works"):
 3. Load job postings from CSV
 4. Simple keyword scoring selects top matches  
 5. Ollama generates a final recommendation response
-
-This mirrors a RAG pipeline but using job descriptions instead of documents.
 """)
