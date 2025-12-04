@@ -1,2 +1,4 @@
-tensorflow
-matplotlib
+streamlit
+pandas
+requests
+PyPDF2
