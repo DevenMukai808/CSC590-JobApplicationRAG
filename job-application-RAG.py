@@ -111,19 +111,19 @@ if uploaded_resume:
             )
 
         
-rag_prompt = f"""
-You are a job-matching assistant.
+        rag_prompt = f"""
+        You are a job-matching assistant.
 
-Given the user's resume:
+        Given the user's resume:
 
-{resume_text}
+        {resume_text}
 
-And the following job postings:
+        And the following job postings:
 
-{context}
+        {context}
 
-Explain which jobs best fit the candidate and why. Provide a friendly summary.
-"""
+        Explain which jobs best fit the candidate and why. Provide a friendly summary.
+        """
 
 with st.expander("ℹ️ How it works"):
     st.markdown("""
